@@ -1,5 +1,5 @@
 import os
-
+import processor
 from flask import Flask, request, render_template
 
 app = Flask(__name__)    
@@ -16,10 +16,16 @@ def allowed_file(filename):
 def home():
 	if request.method == 'POST':
 		file = request.files['file']
+		message = request.form.get('message')
 		if file and allowed_file(file.filename):
 			filename = file.filename
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-			return render_template("index.html", ptxt=plaintext, ctxt=ciphertext)
+			path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+			file.save(path)
+			# processor.process(path)
+			processor.build_cipher(message)
+			return render_template("index.html")
+			# plaintext, ciphertext = processor.process(path)
+			# return render_template("index.html", ptxt=plaintext, ctxt=ciphertext)
 		else:
 			return 'gak boleh', 400
 	return render_template("index.html")
