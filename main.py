@@ -22,7 +22,7 @@ def home():
 			path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 			file.save(path)
 			# processor.process(path)
-			processor.build_cipher(message)
+			processor.process(path, processor.build_cipher(message))
 			return render_template("index.html")
 			# plaintext, ciphertext = processor.process(path)
 			# return render_template("index.html", ptxt=plaintext, ctxt=ciphertext)
